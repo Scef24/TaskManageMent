@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('task_backups', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('task_id')->constrained('task');
+            $table->json('data');
             $table->timestamps();
         });
     }
