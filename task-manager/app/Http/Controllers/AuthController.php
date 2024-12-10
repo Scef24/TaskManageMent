@@ -6,62 +6,85 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     public function showRegisterForm()
     {
-        return view('auth.register');
+        return view('guest.registration');
     }
 
-    public function register(Request $request)
-    {
+    function register(Request $request){
+        try{
+
+        
         $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'username' => 'required|unique:users',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:8',
         ]);
 
-        $user = User::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $data['first_name'] = $request->first_name;
+        $data['last_name'] = $request->last_name;
+        $data['username'] = $request->username;
+        $data['email'] = $request->email;
+        $data['password'] = Hash::make($request->password);
+        $user = User::create($data);
 
-        Session::put('user', $user);
+        if(!$user){
+            return redirect(route('guest.registration'))->with("error","Registration details are not valid");
+        }
 
-        return redirect()->route('home');
+
+        return redirect(route('login'))->with("success","Registration Success");
+    }
+    catch(\Exception $e){
+        return redirect(route('guest.registration'))->with("error",$e->getMessage());
+    }
     }
 
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('guest.login');
     }
 
     public function login(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
+{
+    try{
 
-        $user = User::where('email', $request->email)->first();
+   
+    $request->validate([
+        'email' => 'required',
+        'password' => 'required',
 
-        if ($user && Hash::check($request->password, $user->password)) {
-            Session::put('user', $user);
-            return redirect()->route('home');
-        }
+    ]);
 
-        return back()->withErrors(['email' => 'Invalid credentials.']);
+    $credentials = $request->only('email', 'password');
+
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+        return redirect()->intended(route('user.home'))->with('success', 'Login successful');
     }
 
-    public function logout()
-    {
-        Session::forget('user');
-        return redirect()->route('login.form');
+    return redirect(route('guest.login'))->with("error", "Login details are not valid");
+}
+catch(\Exception $e){
+    return redirect(route('guest.login'))->with("error",$e->getMessage());
+}
+}
+function logOut(Request $request){
+    try{
+
+    
+    $request->session()->flush();
+    Auth::logout();
+    return redirect(route('login'))->with("success","Logout successful");
     }
+    catch(\Exception $e){
+        return redirect(route('user.home'))->with("error",$e->getMessage());
+    }
+}
 }
