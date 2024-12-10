@@ -27,11 +27,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('guest.registration') }}">Register</a>
                         </li>
-                        @Auth
-                        <li class="nav-item">
-                            <a href="" class="nav-link" href="{{route('logout')}}">Logout</a>
-                        </li>
-                        @endAuth
+                      
                     </ul>
                 </div>
             </div>
