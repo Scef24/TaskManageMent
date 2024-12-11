@@ -128,6 +128,7 @@
                     <th>Priority</th>
                     <th>Category</th>
                     <th>Actions</th>
+                    <th>Done</th>
                 </tr>
             </thead>
             <tbody>
@@ -146,6 +147,12 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="get" action="{{ route('task.done', $task->id) }}" style="display:inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-success">Done</button>
                             </form>
                         </td>
                     </tr>

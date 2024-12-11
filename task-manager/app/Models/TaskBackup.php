@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\User;
 class TaskBackup extends Model
 {
-    protected $fillable = ['task_id', 'data'];
+    protected $fillable = ['user_id', 'data'];
 
-    public function task()
+    public function user()
     {
-        return $this->belongsTo(Task::class);
+        return $this->belongsTo(User::class);
     }
 }

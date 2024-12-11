@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categories;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 class CategoriesController extends Controller
 {
     public function index(){
@@ -22,6 +22,7 @@ class CategoriesController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255'
             ]);
+            $validatedData['user_id'] = Auth::id();
             Categories::create($validatedData);
 
             return redirect()->route('user.home')->with('success', 'Category Added Successfully');

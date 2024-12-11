@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('task_backups', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->json('data');
-            $table->timestamps();
+        Schema::table('categories', function (Blueprint $table) {
+            $table->foreignId('user_id')->constrained('users')
+            ->onDelete('cascade');
         });
     }
 
@@ -24,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('task_backups');
+        Schema::table('task_and_categories', function (Blueprint $table) {
+            //
+        });
     }
 };

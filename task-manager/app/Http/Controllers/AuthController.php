@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Backup;
+use App\Http\Controllers\BackupController;
 
 class AuthController extends Controller
 {
@@ -37,7 +39,8 @@ class AuthController extends Controller
         if(!$user){
             return redirect(route('guest.registration'))->with("error","Registration details are not valid");
         }
-
+        $backupController = new BackupController();
+        $backupController->backup($user->id);
 
         return redirect(route('login'))->with("success","Registration Success");
     }

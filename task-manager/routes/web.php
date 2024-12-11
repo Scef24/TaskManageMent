@@ -19,6 +19,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/task/edit/{id}',[TaskController::class,'editTask'])->name('task.edit');
     Route::delete('/tasks/delete/{id}',[TaskController::class,'delete'])->name('task.delete');
     Route::post('/category/add',[CategoriesController::class, 'addCategories'])->name('categories.add');
+    Route::get('/task/done/{id}',[TaskController::class,'done'])->name('task.done');
+    Route::get('/task/doneTask',[TaskController::class,'doneTask'])->name('task.doneTask');
 });
 Route::get('/register',[AuthController::class,'showRegisterForm'])->name('guest.registration');
 Route::post('/register',[AuthController::class,'register'])->name('register');

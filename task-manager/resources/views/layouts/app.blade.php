@@ -18,16 +18,27 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="{{ route('user.home') }}">Home</a>
-                        </li> --}}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('guest.login') }}">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('guest.registration') }}">Register</a>
-                        </li>
-                      
+                        @guest
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('guest.login') }}">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('guest.registration') }}">Register</a>
+                            </li>
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('user.home') }}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('task.doneTask') }}">Done Tasks</a>
+                            </li>
+                            <li class="nav-item">
+                                <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+                                    @csrf
+                                    <button type="submit" class="nav-link btn btn-link" style="display:inline; padding:0;">Logout</button>
+                                </form>
+                            </li>
+                        @endguest
                     </ul>
                 </div>
             </div>
