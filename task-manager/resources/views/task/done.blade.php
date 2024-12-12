@@ -6,7 +6,12 @@
         {{ session('Success') }}
     </div>
 @endif  
-
+    <div class="container">
+        <h1 class="mt-4">Welcome, {{ Auth::user()->first_name }}!</h1>
+    </div>
+    <div class="container">
+      <h3>Here is your finished Task!</h3>
+    </div>
 <table class="table mt-4">
     <thead>
         <tr>

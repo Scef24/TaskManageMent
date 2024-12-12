@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Categories;
+
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -19,8 +19,8 @@ class TaskController extends Controller
                 ->where('status','!=','completed')
                 ->orderBy('due_date','asc')
             ->get();
-            $categories = Categories::where('user_id',$id)->get();
-            return view('user.home', compact('tasks','categories'));
+
+            return view('user.home', compact('tasks'));
         }   
         catch(\Exception $e){
            Log::error('Error retrieving tasks: ' . $e->getMessage());
@@ -37,7 +37,7 @@ class TaskController extends Controller
                 'due_date' => 'required|date|after:today',
                 'status' => 'required|in:pending,in_progress,completed',
                 'priority' => 'required|in:low,medium,high',
-                'category_id' => 'required|exists:categories,id',
+               
                 
             ]);
             $validatedData['user_id'] = Auth::id();
@@ -60,7 +60,7 @@ class TaskController extends Controller
                 'due_date' => 'required|date|after:today',
                 'status' => 'required|in:pending,in_progress,completed',
                 'priority' => 'required|in:low,medium,high',
-                'category_id' => 'required|exists:categories,id',
+              
             ]);
 
             $task->update($validatedData);
